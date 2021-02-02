@@ -1,0 +1,7 @@
+<apex:page standardController="Producto_Adquirido__c" extensions="ProductosPorTiempo_Ctr">
+    <apex:form>
+        <apex:pageBlock title="Comparación de producto en el tiempo">
+            
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
