@@ -1,7 +1,26 @@
-<apex:page standardController="Producto_Adquirido__c" extensions="ProductosPorTiempo_Ctr">
+<apex:page standardController="Producto_Adquirido__c" extensions="ProductosPorTiempo_Ctr" tabStyle="Producto_Adquirido__C">
     <apex:form>
         <apex:pageBlock title="Comparación de producto en el tiempo">
-            
+            <apex:pageBlockSection title="Información de producto">
+                <apex:outputLabel value="{!producto_adquirido__c.Name}" />
+                <apex:outputLabel value="{!producto_adquirido__c.segmento__r.name}"/>
+            </apex:pageBlockSection>   
+            <apex:pageBlockSection title="Relación de precios">
+                <table border="1px">
+                    <tr>
+                        <th>Fecha de compra</th>
+                        <th>Nombre del item</th>
+                        <th>Valor por unidad</th>
+                    </tr>
+                    <apex:repeat value="{!itemsAdq}" var="itm">
+                        <tr>
+                            <td>{!itm.Quincena__c}</td>
+                            <td>{!itm.Name}</td>
+                            <td>{!itm.Precio_por_Unidad__c}</td>
+                        </tr>
+                    </apex:repeat>   
+                </table>
+            </apex:pageBlockSection>
         </apex:pageBlock>
     </apex:form>
 </apex:page>
