@@ -11,12 +11,14 @@
                         <th>Fecha de compra</th>
                         <th>Nombre del item</th>
                         <th>Valor por unidad</th>
+                        <th>Almacen de compra</th>
                     </tr>
                     <apex:repeat value="{!itemsAdq}" var="itm">
                         <tr>
-                            <td>{!itm.Quincena__c}</td>
-                            <td>{!itm.Name}</td>
-                            <td>{!itm.Precio_por_Unidad__c}</td>
+                            <td>{!itm.Fecha_de_compra}</td>
+                            <td>{!itm.name}</td>
+                            <td>{!itm.Precio_por_Unidad}</td>
+                            <td>{!itm.nameAlm}</td>
                         </tr>
                     </apex:repeat>   
                 </table>

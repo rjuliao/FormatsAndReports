@@ -2,7 +2,7 @@ public with sharing class ProductosPorTiempo_Ctr {
 
     private Producto_Adquirido__c pc            {get; set;}
     private Id idProducto                       {get; set;}
-    public List<Item_de_compra__c> itemsAdq     {get; set;}
+    public List<Item> itemsAdq                  {get; set;}
 
     public ProductosPorTiempo_Ctr(ApexPages.StandardController controller) {
         this.idProducto = (id) controller.getId();
@@ -27,28 +27,47 @@ public with sharing class ProductosPorTiempo_Ctr {
     }
 
     //Get information of all the items related to the product
-    public List<Item_de_compra__c> getInformation(){
+    public List<Item> getInformation(){
         List<Item_de_compra__c> items = [SELECT ID, name, Cantidad__c,
                                             Precio_por_Unidad__c, Precio_total__c, Unidades__c,
-                                            Quincena__c
+                                            Quincena__r.Fecha_de_compra__c, Almacen__r.Name
                                             FROM Item_de_compra__c 
                                             WHERE Producto_Adquirido__c = :idProducto];
 
-        Set<Id> itemsId = new Set<Id>();
-        for (Item_de_compra__c item : items) {
-            itemsId.add(item.id);
-        }
-        //List<Quincena__c>  comp = [SELECT Id, Name, Fecha_de_compra__c FROM Quincena__c WHERE Item_de_compra__c = :itemsId];
-        
-        for (Id itmid : itemsid) {
+        List<Item> itemss = new List<Item>();       
+        for (Item_de_compra__c itm : items) {
             
+            Date fc = date.newinstance(itm.Quincena__r.Fecha_de_compra__c.year(), itm.Quincena__r.Fecha_de_compra__c.month(), itm.Quincena__r.Fecha_de_compra__c.day());
+            String dateVal = String.valueOf(fc);
+            Item i = new Item(itm.name, itm.Precio_por_Unidad__c, dateVal, itm.Almacen__r.Name);
+            itemss.add(i);
         }
 
-        if(!items.isEmpty()){
-            system.debug('Items encontrados ' + items );
-            return items;
+        
+
+        if(!itemss.isEmpty()){
+            System.debug('Items encontrados ' + itemss );
+            return itemss;
         } else {
             return null;
         }
     }
+
+
+    public class Item {
+        public String name;
+        public Decimal Cantidad;
+        public Decimal Precio_por_Unidad;
+        public Decimal Precio_total;
+        public String Fecha_de_compra;
+        public String nameAlm;
+
+        public Item( String name, Decimal Precio_por_Unidad, String Fecha_de_compra, String nameAlm){
+            this.name = name;
+            this.Precio_por_Unidad = Precio_por_Unidad;
+            this.Fecha_de_compra = Fecha_de_compra;
+            this.nameAlm = nameAlm;
+        }
+    }
+
 }
